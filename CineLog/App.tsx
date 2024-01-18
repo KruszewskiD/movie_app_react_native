@@ -9,11 +9,13 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 
 import WelcomeScreen from './src/screens/WelcomeScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import SignUpScreen from './src/screens/SignUpScreen';
 
 function App(): React.JSX.Element {
   return (
     <View style={{flex: 1}}>
-      <WelcomeScreen></WelcomeScreen>
+      <SignUpScreen />
     </View>
   );
 }
