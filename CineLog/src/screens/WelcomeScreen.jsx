@@ -6,7 +6,7 @@ import {SLIDES} from '../constants/slides';
 import SlideBaner from '../components/SlideBaner';
 import FlexContainer from '../components/FlexContainer';
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({navigation}) => {
   return (
     <ImageBackground
       source={require('../assets/flash_movie.jpeg')}
@@ -19,8 +19,19 @@ const WelcomeScreen = () => {
         </View>
         <IndicatorGroup slides={SLIDES} activeId={1} />
         <FlexContainer style={styles.flexContainer}>
-          <ButtonComponent transparent>Signup</ButtonComponent>
-          <ButtonComponent>Login</ButtonComponent>
+          <ButtonComponent
+            transparent
+            onPress={() => {
+              navigation.navigate('SignUpScreen');
+            }}>
+            Signup
+          </ButtonComponent>
+          <ButtonComponent
+            onPress={() => {
+              navigation.navigate('LoginScreen');
+            }}>
+            Login
+          </ButtonComponent>
         </FlexContainer>
       </LinearGradient>
     </ImageBackground>

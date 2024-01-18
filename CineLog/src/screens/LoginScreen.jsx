@@ -6,7 +6,7 @@ import ExternalServices from '../components/ExternalServices';
 import AuthToggle from '../components/AuthToggle';
 import SplitTextLine from '../components/SplitTextLine';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   return (
     <View style={styles.loginScreenWrapper}>
       {/* Header */}
@@ -34,6 +34,9 @@ const LoginScreen = () => {
           link={{
             toScreen: 'SignUpScreen',
             title: 'Sign-up',
+          }}
+          onPress={() => {
+            navigation.navigate('SignUpScreen');
           }}
         />
       </View>
