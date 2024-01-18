@@ -9,22 +9,27 @@ import SplitTextLine from '../components/SplitTextLine';
 const SignUpScreen = () => {
   return (
     <View style={styles.signupScreenWrapper}>
+      {/* Header */}
       <View style={styles.header}>
         <Heading style={styles.heading}>CineLog</Heading>
         <Text style={styles.headerText}>Please register for an account</Text>
       </View>
-
+      {/* Body */}
       <View style={styles.contentContainer}>
+        {/* Input */}
         <View style={styles.inputsContainer}>
           <UserTextInput placeholder="E-mail Address" />
           <UserTextInput placeholder="Password" secure />
           <UserTextInput placeholder="Confirm Password" secure />
         </View>
+        {/* Button */}
         <View style={styles.buttonContainer}>
           <ButtonComponent>Sign-up</ButtonComponent>
         </View>
+        {/* Or login with */}
         <SplitTextLine />
         <ExternalServices />
+        {/* Sign-up */}
         <AuthToggle
           question="You have an Account?"
           link={{
