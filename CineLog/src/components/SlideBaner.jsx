@@ -1,9 +1,9 @@
 import {View, Text, StyleSheet} from 'react-native';
-
+import Heading from './Heading';
 const SlideBaner = ({slides, activeId}) => {
   return (
     <View style={styles.slideBaner}>
-      <Text style={styles.banerTitle}>{slides[activeId - 1].title}</Text>
+      <Heading style={{color: 'white'}}>{slides[activeId - 1].title}</Heading>
       <Text style={styles.banerDescription}>
         {slides[activeId - 1].description}
       </Text>

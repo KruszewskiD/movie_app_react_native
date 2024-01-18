@@ -2,7 +2,7 @@ import {Pressable, View, Text, StyleSheet} from 'react-native';
 
 const ButtonComponent = ({children, transparent}) => {
   return (
-    <Pressable style={{flex: 1, height: 50}}>
+    <Pressable style={{height: 50, flex: 1}}>
       <View
         style={[
           styles.buttonComponent,
@@ -20,11 +20,11 @@ const ButtonComponent = ({children, transparent}) => {
 };
 
 const styles = StyleSheet.create({
-  slideBaner: {
-    padding: 16,
-    height: '30%',
-    justifyContent: 'space-evenly',
-  },
+  // slideBaner: {
+  //   padding: 16,
+  //   height: '30%',
+  //   justifyContent: 'space-evenly',
+  // },
   buttonComponent: {
     flex: 1,
     borderColor: 'white',
