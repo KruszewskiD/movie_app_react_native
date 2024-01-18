@@ -1,8 +1,8 @@
 import {Pressable, View, Text, StyleSheet} from 'react-native';
 
-const ButtonComponent = ({children, transparent}) => {
+const ButtonComponent = ({children, transparent, onPress}) => {
   return (
-    <Pressable style={{height: 50, flex: 1}}>
+    <Pressable style={{height: 50, flex: 1}} onPress={onPress}>
       <View
         style={[
           styles.buttonComponent,
