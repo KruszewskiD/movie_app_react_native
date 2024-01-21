@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
+import {StyleSheet, Text, View, Image, Pressable, Keyboard} from 'react-native';
 import UserTextInput from '../components/UserTextInput';
 import ButtonComponent from '../components/ButtonComponent';
 import Heading from '../components/Heading';
@@ -9,37 +9,39 @@ import SplitTextLine from '../components/SplitTextLine';
 const LoginScreen = ({navigation}) => {
   return (
     <View style={styles.loginScreenWrapper}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Heading style={styles.heading}>CineLog</Heading>
-        <Text style={styles.headerText}>Please login to your account</Text>
-      </View>
-      {/* Body */}
-      <View style={styles.contentWrapper}>
-        {/* Input */}
-        <View style={styles.inputsWrapper}>
-          <UserTextInput placeholder="E-mail Address" />
-          <UserTextInput placeholder="Password" secure />
+      <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Heading style={styles.heading}>CineLog</Heading>
+          <Text style={styles.headerText}>Please login to your account</Text>
         </View>
-        {/* Button */}
-        <View style={styles.buttonContainer}>
-          <ButtonComponent>Login</ButtonComponent>
+        {/* Body */}
+        <View style={styles.contentWrapper}>
+          {/* Input */}
+          <View style={styles.inputsWrapper}>
+            <UserTextInput placeholder="E-mail Address" />
+            <UserTextInput placeholder="Password" secure />
+          </View>
+          {/* Button */}
+          <View style={styles.buttonContainer}>
+            <ButtonComponent>Login</ButtonComponent>
+          </View>
+          {/* Or login with */}
+          <SplitTextLine />
+          <ExternalServices />
+          {/* Sign-up */}
+          <AuthToggle
+            question="New to CineLog?"
+            link={{
+              toScreen: 'SignUpScreen',
+              title: 'Sign-up',
+            }}
+            onPress={() => {
+              navigation.navigate('SignUpScreen');
+            }}
+          />
         </View>
-        {/* Or login with */}
-        <SplitTextLine />
-        <ExternalServices />
-        {/* Sign-up */}
-        <AuthToggle
-          question="New to CineLog?"
-          link={{
-            toScreen: 'SignUpScreen',
-            title: 'Sign-up',
-          }}
-          onPress={() => {
-            navigation.navigate('SignUpScreen');
-          }}
-        />
-      </View>
+      </Pressable>
     </View>
   );
 };
