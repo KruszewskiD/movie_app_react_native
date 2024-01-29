@@ -24,7 +24,12 @@ const LoginScreen = ({navigation}) => {
           </View>
           {/* Button */}
           <View style={styles.buttonContainer}>
-            <ButtonComponent>Login</ButtonComponent>
+            <ButtonComponent
+              onPress={() => {
+                navigation.navigate('Tab');
+              }}>
+              Login
+            </ButtonComponent>
           </View>
           {/* Or login with */}
           <SplitTextLine />
