@@ -12,10 +12,35 @@ import ButtonComponent from '../components/ButtonComponent';
 import {MOVIE} from '../constants/movie';
 import {FlatList} from 'react-native-gesture-handler';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import {useEffect, useState} from 'react';
+import {movieDetailsApiCall} from '../api/movieDetailApiCall';
 //const singleMovie = route.params?.movie
 
 const MovieDetailScreen = ({route}) => {
-  const singleMovie = MOVIE;
+  const [singleMovie, setSingleMovie] = useState();
+  useEffect(() => {
+    const fetchMovieDetails = async () => {
+      try {
+        const data = await movieDetailsApiCall(route.params.movie.id); // Upewnij się, że `movieId` jest przekazywany poprawnie
+        setSingleMovie(data);
+        console.log('------------' + data);
+      } catch (error) {
+        console.error(error);
+        // Możesz także ustawić tutaj stan błędu, aby wyświetlić wiadomość użytkownikowi
+      }
+    };
+
+    fetchMovieDetails();
+  }, [route.params.movieId]);
+
+  if (!singleMovie) {
+    return (
+      <View style={{flex: 1}}>
+        <Text>Waiting...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{flex: 1, backgroundColor: '#34344A'}}>
       <ScrollView>
@@ -60,7 +85,7 @@ const MovieDetailScreen = ({route}) => {
           </Heading>
 
           <View style={{flexDirection: 'row', gap: 5}}>
-            {MOVIE.genres.map(element => (
+            {singleMovie.genres.map(element => (
               <View
                 key={element.id}
                 style={{

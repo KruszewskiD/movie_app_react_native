@@ -7,6 +7,7 @@ const Card = ({image, data}) => {
   return (
     <Pressable
       onPress={() => {
+        console.log(data);
         return navigation.navigate('MovieScreen', {movie: data});
       }}>
       <View style={{maxWidth: 100, marginHorizontal: 5}}>
