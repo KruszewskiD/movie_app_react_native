@@ -58,12 +58,6 @@ const BottomTabs = () => {
           },
           headerTintColor: '#ddd',
         }}></Tab.Screen>
-      <Tab.Screen
-        name="MainScreen3"
-        component={MovieDetailScreen}
-        options={{
-          headerShown: false,
-        }}></Tab.Screen>
     </Tab.Navigator>
   );
 };
