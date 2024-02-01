@@ -14,6 +14,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {useEffect, useState} from 'react';
 import {movieDetailsApiCall} from '../api/movieDetailApiCall';
+import {filterUnique} from '../helpers/filterUnique';
 //const singleMovie = route.params?.movie
 
 const MovieDetailScreen = ({route}) => {
@@ -21,12 +22,11 @@ const MovieDetailScreen = ({route}) => {
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
-        const data = await movieDetailsApiCall(route.params.movie.id); // Upewnij się, że `movieId` jest przekazywany poprawnie
+        const data = await movieDetailsApiCall(route.params.movie.id);
         setSingleMovie(data);
         console.log('------------' + data);
       } catch (error) {
         console.error(error);
-        // Możesz także ustawić tutaj stan błędu, aby wyświetlić wiadomość użytkownikowi
       }
     };
 
@@ -132,9 +132,11 @@ const MovieDetailScreen = ({route}) => {
               Country:
             </Text>
             <Text style={{fontSize: 20, color: 'white'}}>
-              {singleMovie.production_companies
-                .map(element => element.origin_country)
-                .join(', ')}
+              {filterUnique(
+                singleMovie.production_companies.map(
+                  element => element.origin_country,
+                ),
+              ).join(', ')}
             </Text>
           </View>
           {/* SINGLE DETAIL */}
@@ -148,7 +150,7 @@ const MovieDetailScreen = ({route}) => {
               }}>
               Genre:
             </Text>
-            <Text style={{fontSize: 20, color: 'white'}}>
+            <Text style={{fontSize: 20, color: 'white', flex: 1}}>
               {singleMovie.genres.map(element => element.name).join(', ')}
             </Text>
           </View>

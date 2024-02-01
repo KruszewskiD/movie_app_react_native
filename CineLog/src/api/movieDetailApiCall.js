@@ -1,6 +1,10 @@
 import {API_KEY} from "@env"
+
+
+
+
+
 export const movieDetailsApiCall = async (movieId) => {
-  const xdd= 753342
   const options = {
     method: 'GET',
     headers: {
