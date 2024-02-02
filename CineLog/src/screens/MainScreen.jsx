@@ -1,13 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TextInput,
-  Pressable,
-  FlatList,
-  Platform,
-} from 'react-native';
+import {StyleSheet, View, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {GENRES} from '../constants/genres';
 import {POPULAR} from '../constants/popular';
@@ -15,45 +6,42 @@ import Card from '../components/Card';
 import HorizontalMovieList from '../components/HorizontalMovieList';
 import YoutubePlayer from 'react-native-youtube-iframe';
 import getMovieList from '../api/getMovieList';
+import LoadingComponent from '../components/LoadingComponent';
 
 const MainScreen = () => {
   const [popularMovies, setPopularMovies] = useState();
   const [nowPlaying, setNowPlaying] = useState();
   const [upcoming, setUpcoming] = useState();
   const [topRated, setTopRated] = useState();
+  const [isDataReady, setIsDataReady] = useState(false);
   useEffect(() => {
     const horizontalLists = ['popular', 'now_playing', 'upcoming', 'top_rated'];
-
-    const fetchMovieDetails = async category => {
+    const fetchMovieDetails = async () => {
       try {
-        const data = await getMovieList(category);
-        switch (category) {
-          case 'popular':
-            setPopularMovies(data);
-            break;
-          case 'now_playing':
-            setNowPlaying(data);
-          case 'upcoming':
-            setUpcoming(data);
-            break;
-          case 'top_rated':
-            setTopRated(data);
-            break;
-        }
+        // Tworzenie promisów dla wszystkich zapytań
+        const promises = horizontalLists.map(category =>
+          getMovieList(category),
+        );
+        // Oczekiwanie na zakończenie wszystkich promisów
+        const results = await Promise.all(promises);
+
+        // Aktualizacja stanów na podstawie wyników
+        setPopularMovies(results[0] || {results: []});
+        setNowPlaying(results[1] || {results: []});
+        setUpcoming(results[2] || {results: []});
+        setTopRated(results[3] || {results: []});
+
+        setIsDataReady(true);
       } catch (error) {
         console.error(error);
-        // Możesz także ustawić tutaj stan błędu, aby wyświetlić wiadomość użytkownikowi
       }
     };
-    horizontalLists.forEach(element => fetchMovieDetails(element));
+
+    fetchMovieDetails();
   }, []);
 
-  if (!topRated) {
-    return (
-      <View style={{flex: 1}}>
-        <Text>Waiting...</Text>
-      </View>
-    );
+  if (!isDataReady) {
+    return <LoadingComponent />;
   }
 
   return (
@@ -67,7 +55,14 @@ const MainScreen = () => {
               marginTop: 12,
               minHeight: '220',
             }}>
-            <YoutubePlayer height={220} play={false} videoId={'1DJYiG6wh0w'} />
+            <YoutubePlayer
+              height={220}
+              play={false}
+              videoId={'1DJYiG6wh0w'}
+              onChangeState={state => {
+                console.log(state);
+              }}
+            />
           </View>
           <View>
             <HorizontalMovieList
@@ -76,7 +71,7 @@ const MainScreen = () => {
             />
             <HorizontalMovieList
               sectionTitle="Now Playing"
-              moviesData={nowPlaying?.results.reverse()}
+              moviesData={nowPlaying.results}
             />
             <HorizontalMovieList
               sectionTitle="Upcoming movies"

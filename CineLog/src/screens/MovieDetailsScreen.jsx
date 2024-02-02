@@ -16,9 +16,10 @@ import {useEffect, useState} from 'react';
 import {movieDetailsApiCall} from '../api/movieDetailApiCall';
 import {filterUnique} from '../helpers/filterUnique';
 import {updateAsyncStorage} from '../asyncStorage/updateAsyncStorage';
+import LoadingComponent from '../components/LoadingComponent';
 //const singleMovie = route.params?.movie
 
-const MovieDetailScreen = ({route}) => {
+const MovieDetailScreen = ({route, navigation}) => {
   const [singleMovie, setSingleMovie] = useState();
   useEffect(() => {
     const fetchMovieDetails = async () => {
@@ -39,16 +40,28 @@ const MovieDetailScreen = ({route}) => {
   };
 
   if (!singleMovie) {
-    return (
-      <View style={{flex: 1}}>
-        <Text>Waiting...</Text>
-      </View>
-    );
+    return <LoadingComponent />;
   }
 
   return (
     <View style={{flex: 1, backgroundColor: '#34344A'}}>
-      <ScrollView>
+      <ScrollView
+        style={{position: 'relative'}}
+        showsVerticalScrollIndicator={false}>
+        <Pressable
+          style={{
+            position: 'absolute',
+            top: 50,
+            left: 20,
+            zIndex: 3,
+            backgroundColor: '#34344A',
+            borderRadius: 50,
+          }}
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <FeatherIcon name="arrow-left" size={30} color="white" />
+        </Pressable>
         <ImageBackground
           source={{
             uri: `https://image.tmdb.org/t/p/w500/${singleMovie.backdrop_path}`,
@@ -65,6 +78,7 @@ const MovieDetailScreen = ({route}) => {
                 width: 130,
                 height: 195,
                 marginTop: 20,
+
                 borderRadius: 10,
               }}></Image>
           </View>

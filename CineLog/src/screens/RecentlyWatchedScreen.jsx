@@ -1,4 +1,4 @@
-import {View, Image} from 'react-native';
+import {View, Image, Text, Pressable} from 'react-native';
 import VerticalMovieList from '../components/VerticalMovieList';
 import {POPULAR} from '../constants/popular';
 import {useCallback, useEffect, useState} from 'react';
@@ -27,6 +27,10 @@ const RecentlyWatchedScreen = () => {
     }, []),
   );
 
+  const onPressClearHandler = () => {
+    updateAsyncStorage('clearStorage');
+  };
+
   if (!asyncMovieData) {
     return (
       <View
@@ -47,7 +51,21 @@ const RecentlyWatchedScreen = () => {
         backgroundColor: '#34344A',
         flex: 1,
         paddingHorizontal: 16,
+        position: 'relative',
       }}>
+      <Pressable
+        style={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          height: 50,
+          width: 50,
+          backgroundColor: 'red',
+          zIndex: 1,
+        }}
+        onPress={onPressClearHandler}>
+        <Text>X</Text>
+      </Pressable>
       <VerticalMovieList movieData={asyncMovieData} />
     </View>
   );
