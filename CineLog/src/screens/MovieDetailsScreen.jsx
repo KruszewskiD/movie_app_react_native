@@ -15,6 +15,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 import {useEffect, useState} from 'react';
 import {movieDetailsApiCall} from '../api/movieDetailApiCall';
 import {filterUnique} from '../helpers/filterUnique';
+import {updateAsyncStorage} from '../asyncStorage/updateAsyncStorage';
 //const singleMovie = route.params?.movie
 
 const MovieDetailScreen = ({route}) => {
@@ -32,6 +33,10 @@ const MovieDetailScreen = ({route}) => {
 
     fetchMovieDetails();
   }, [route.params.movieId]);
+
+  const onPressAddToRecentlyWatched = async (key, value) => {
+    await updateAsyncStorage(key, value);
+  };
 
   if (!singleMovie) {
     return (
@@ -109,7 +114,18 @@ const MovieDetailScreen = ({route}) => {
             </Text>
             <Text style={{color: 'white'}}>450k reviews</Text>
           </View>
-          <ButtonComponent>Mark As Watched</ButtonComponent>
+          <ButtonComponent
+            onPress={() => {
+              onPressAddToRecentlyWatched('watched-movies', {
+                id: singleMovie.id,
+                original_title: singleMovie.title,
+                poster_path: singleMovie.poster_path,
+                release_date: singleMovie.release_date,
+                vote_average: singleMovie.vote_average,
+              });
+            }}>
+            Mark As Watched
+          </ButtonComponent>
           <Heading style={{fontSize: 30, color: 'white', fontWeight: 'bold'}}>
             Description:
           </Heading>
