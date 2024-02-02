@@ -76,7 +76,7 @@ const MainScreen = () => {
             />
             <HorizontalMovieList
               sectionTitle="Now Playing"
-              moviesData={nowPlaying.results.reverse()}
+              moviesData={nowPlaying?.results.reverse()}
             />
             <HorizontalMovieList
               sectionTitle="Upcoming movies"

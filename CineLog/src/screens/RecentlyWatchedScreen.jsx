@@ -1,4 +1,4 @@
-import {View} from 'react-native';
+import {View, Image} from 'react-native';
 import VerticalMovieList from '../components/VerticalMovieList';
 import {POPULAR} from '../constants/popular';
 import {useCallback, useEffect, useState} from 'react';
@@ -10,7 +10,6 @@ const RecentlyWatchedScreen = () => {
   useFocusEffect(
     useCallback(() => {
       let isActive = true;
-
       const getRecentlyWatchedData = async key => {
         try {
           const fetchedData = await updateAsyncStorage(key);
@@ -27,6 +26,20 @@ const RecentlyWatchedScreen = () => {
       };
     }, []),
   );
+
+  if (!asyncMovieData) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#34344A',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Image source={require('../assets/NoResultsImage.png')}></Image>
+      </View>
+    );
+  }
 
   return (
     <View
