@@ -17,11 +17,13 @@ import {movieDetailsApiCall} from '../api/movieDetailApiCall';
 import {filterUnique} from '../helpers/filterUnique';
 import {updateAsyncStorage} from '../asyncStorage/updateAsyncStorage';
 import LoadingComponent from '../components/LoadingComponent';
+import {updateFavoritesList} from '../asyncStorage/updateFavoritesList';
 //const singleMovie = route.params?.movie
 
 const MovieDetailScreen = ({route, navigation}) => {
   const [singleMovie, setSingleMovie] = useState();
   const [isMarkAsWatched, setIsMarkAsWatched] = useState(false);
+  const [isMarkAsFavorite, setIsMarkAsFavorite] = useState(false);
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
@@ -47,6 +49,13 @@ const MovieDetailScreen = ({route, navigation}) => {
     if (!isMarkAsWatched) {
       await updateAsyncStorage(key, value);
       setIsMarkAsWatched(true);
+    }
+  };
+
+  const onPressAddToFavoritesMovies = async (key, value) => {
+    if (!isMarkAsFavorite) {
+      await updateFavoritesList(key, value);
+      setIsMarkAsFavorite(true);
     }
   };
 
@@ -139,6 +148,7 @@ const MovieDetailScreen = ({route, navigation}) => {
             </Text>
             <Text style={{color: 'white'}}>450k reviews</Text>
           </View>
+          {/* Przyciski  */}
           <ButtonComponent
             transparent={isMarkAsWatched}
             onPress={() => {
@@ -152,6 +162,21 @@ const MovieDetailScreen = ({route, navigation}) => {
             }}>
             {!isMarkAsWatched ? 'Mark As Watched' : 'On List'}
           </ButtonComponent>
+
+          <ButtonComponent
+            transparent={isMarkAsFavorite}
+            onPress={() => {
+              onPressAddToFavoritesMovies('favorites-movies', {
+                id: singleMovie.id,
+                original_title: singleMovie.title,
+                poster_path: singleMovie.poster_path,
+                release_date: singleMovie.release_date,
+                vote_average: singleMovie.vote_average,
+              });
+            }}>
+            {!isMarkAsFavorite ? 'Mark As Favorite' : 'On Favorites List'}
+          </ButtonComponent>
+
           <Heading style={{fontSize: 30, color: 'white', fontWeight: 'bold'}}>
             Description:
           </Heading>

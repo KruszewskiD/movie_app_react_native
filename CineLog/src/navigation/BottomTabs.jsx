@@ -9,6 +9,7 @@ import {POPULAR} from '../constants/popular';
 import VerticalMovieList from '../components/VerticalMovieList';
 import RecentlyWatchedScreen from '../screens/RecentlyWatchedScreen';
 import MovieDetailScreen from '../screens/MovieDetailsScreen';
+import FavoritesMovieScreen from '../screens/FavoritesMoviesScreen';
 const Tab = createBottomTabNavigator();
 
 const BottomTabs = () => {
@@ -51,6 +52,16 @@ const BottomTabs = () => {
       <Tab.Screen
         name="Ostatnio oglądane"
         component={RecentlyWatchedScreen}
+        options={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: '#34344A',
+          },
+          headerTintColor: '#ddd',
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Ulubione"
+        component={FavoritesMovieScreen}
         options={{
           headerShown: true,
           headerStyle: {
