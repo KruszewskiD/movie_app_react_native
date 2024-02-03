@@ -21,12 +21,20 @@ import LoadingComponent from '../components/LoadingComponent';
 
 const MovieDetailScreen = ({route, navigation}) => {
   const [singleMovie, setSingleMovie] = useState();
+  const [isMarkAsWatched, setIsMarkAsWatched] = useState(false);
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
+        const asyncStorageData = await updateAsyncStorage('watched-movies');
+        if (asyncStorageData != null) {
+          asyncStorageData.forEach(element => {
+            if (element.id == route.params.movie.id) {
+              setIsMarkAsWatched(true);
+            }
+          });
+        }
         const data = await movieDetailsApiCall(route.params.movie.id);
         setSingleMovie(data);
-        console.log('------------' + data);
       } catch (error) {
         console.error(error);
       }
@@ -36,7 +44,10 @@ const MovieDetailScreen = ({route, navigation}) => {
   }, [route.params.movieId]);
 
   const onPressAddToRecentlyWatched = async (key, value) => {
-    await updateAsyncStorage(key, value);
+    if (!isMarkAsWatched) {
+      await updateAsyncStorage(key, value);
+      setIsMarkAsWatched(true);
+    }
   };
 
   if (!singleMovie) {
@@ -129,6 +140,7 @@ const MovieDetailScreen = ({route, navigation}) => {
             <Text style={{color: 'white'}}>450k reviews</Text>
           </View>
           <ButtonComponent
+            transparent={isMarkAsWatched}
             onPress={() => {
               onPressAddToRecentlyWatched('watched-movies', {
                 id: singleMovie.id,
@@ -138,7 +150,7 @@ const MovieDetailScreen = ({route, navigation}) => {
                 vote_average: singleMovie.vote_average,
               });
             }}>
-            Mark As Watched
+            {!isMarkAsWatched ? 'Mark As Watched' : 'On List'}
           </ButtonComponent>
           <Heading style={{fontSize: 30, color: 'white', fontWeight: 'bold'}}>
             Description:
