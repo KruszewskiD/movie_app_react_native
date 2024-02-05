@@ -3,6 +3,7 @@ import {Pressable, View, Text, StyleSheet} from 'react-native';
 
 const ButtonComponent = ({children, transparent, onPress}) => {
   const [isPressed, setIsPressed] = useState(false);
+
   return (
     <Pressable
       onPressIn={() => setIsPressed(true)}
@@ -29,11 +30,6 @@ const ButtonComponent = ({children, transparent, onPress}) => {
 };
 
 const styles = StyleSheet.create({
-  // slideBaner: {
-  //   padding: 16,
-  //   height: '30%',
-  //   justifyContent: 'space-evenly',
-  // },
   buttonComponent: {
     flex: 1,
     borderColor: 'white',
@@ -43,12 +39,3 @@ const styles = StyleSheet.create({
   },
 });
 export default ButtonComponent;
-
-// [
-//   styles.buttonComponent,
-//   {
-//     backgroundColor: transparent ? 'transparent' : '#26253A',
-//     borderWidth: transparent ? 2 : null,
-//   },
-//   {backgroundColor: pressed ? 'black' : 'white'},
-// ]

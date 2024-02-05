@@ -9,10 +9,8 @@ const getMovieList = async (category) => {
         }
       };
 
-      
       try {
         const response = await fetch(`https://api.themoviedb.org/3/movie/${category}?language=pl-PL&page=1`, options);
-    
         if (!response.ok) {
           throw new Error(`Network response was not ok. Status: ${response.status}`);
         }

@@ -1,5 +1,4 @@
 import {StyleSheet, View} from 'react-native';
-import {act} from 'react-test-renderer';
 
 const Indicator = ({active}) => {
   return (

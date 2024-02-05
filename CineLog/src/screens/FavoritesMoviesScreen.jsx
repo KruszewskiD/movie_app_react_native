@@ -1,37 +1,11 @@
 import {View, Image, Text, Pressable} from 'react-native';
 import VerticalMovieList from '../components/VerticalMovieList';
-import {POPULAR} from '../constants/popular';
-import {useCallback, useEffect, useState} from 'react';
-import {useFocusEffect} from '@react-navigation/native';
-import {updateFavoritesList} from '../asyncStorage/updateFavoritesList';
+import {useFavorites} from '../hooks/useFavorites';
+
 const FavoritesMovieScreen = () => {
-  const [asyncMovieData, setAsyncMovieData] = useState();
+  const {favoritesList, clearFavorites} = useFavorites();
 
-  useFocusEffect(
-    useCallback(() => {
-      let isActive = true;
-      const getRecentlyWatchedData = async key => {
-        try {
-          const fetchedData = await updateFavoritesList(key);
-          setAsyncMovieData(await fetchedData);
-        } catch (error) {
-          console.error('Failed to fetch or set movie data:', error);
-        }
-      };
-
-      getRecentlyWatchedData('favorites-movies');
-
-      return () => {
-        isActive = false;
-      };
-    }, []),
-  );
-
-  const onPressClearHandler = () => {
-    updateFavoritesList('clearStorage');
-  };
-
-  if (!asyncMovieData) {
+  if (!favoritesList) {
     return (
       <View
         style={{
@@ -63,10 +37,10 @@ const FavoritesMovieScreen = () => {
           backgroundColor: 'red',
           zIndex: 1,
         }}
-        onPress={onPressClearHandler}>
+        onPress={clearFavorites}>
         <Text>X</Text>
       </Pressable>
-      <VerticalMovieList movieData={asyncMovieData} />
+      <VerticalMovieList movieData={favoritesList} />
     </View>
   );
 };

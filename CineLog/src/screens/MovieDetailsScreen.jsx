@@ -1,63 +1,28 @@
-import {
-  View,
-  ScrollView,
-  Text,
-  Image,
-  ImageBackground,
-  Pressable,
-} from 'react-native';
-import {POPULAR} from '../constants/popular';
+import {View, ScrollView, Text, Image, ImageBackground} from 'react-native';
 import Heading from '../components/Heading';
 import ButtonComponent from '../components/ButtonComponent';
-import {MOVIE} from '../constants/movie';
-import {FlatList} from 'react-native-gesture-handler';
-import FeatherIcon from 'react-native-vector-icons/Feather';
-import {useEffect, useState} from 'react';
-import {movieDetailsApiCall} from '../api/movieDetailApiCall';
-import {filterUnique} from '../helpers/filterUnique';
-import {updateAsyncStorage} from '../asyncStorage/updateAsyncStorage';
+
 import LoadingComponent from '../components/LoadingComponent';
-import {updateFavoritesList} from '../asyncStorage/updateFavoritesList';
+
+import GoBackButton from '../components/GoBackButton';
+import MovieGenresList from '../components/MovieGenresList';
+import MovieInfoWithIcons from '../components/MovieInfoWithIcons';
+import MovieDescription from '../components/MovieDescription';
+import MovieDetails from '../components/MovieDetails';
+import HorizontalCreditsList from '../components/HorizontalCreditsList';
+import {useMovieDetail} from '../hooks/useMovieDetail';
+import MovieDetailsHeader from './MovieDetailsHeader';
 //const singleMovie = route.params?.movie
 
 const MovieDetailScreen = ({route, navigation}) => {
-  const [singleMovie, setSingleMovie] = useState();
-  const [isMarkAsWatched, setIsMarkAsWatched] = useState(false);
-  const [isMarkAsFavorite, setIsMarkAsFavorite] = useState(false);
-  useEffect(() => {
-    const fetchMovieDetails = async () => {
-      try {
-        const asyncStorageData = await updateAsyncStorage('watched-movies');
-        if (asyncStorageData != null) {
-          asyncStorageData.forEach(element => {
-            if (element.id == route.params.movie.id) {
-              setIsMarkAsWatched(true);
-            }
-          });
-        }
-        const data = await movieDetailsApiCall(route.params.movie.id);
-        setSingleMovie(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchMovieDetails();
-  }, [route.params.movieId]);
-
-  const onPressAddToRecentlyWatched = async (key, value) => {
-    if (!isMarkAsWatched) {
-      await updateAsyncStorage(key, value);
-      setIsMarkAsWatched(true);
-    }
-  };
-
-  const onPressAddToFavoritesMovies = async (key, value) => {
-    if (!isMarkAsFavorite) {
-      await updateFavoritesList(key, value);
-      setIsMarkAsFavorite(true);
-    }
-  };
+  const movieId = route.params.movie.id;
+  const {
+    singleMovie,
+    isMarkAsWatched,
+    onPressAddToRecentlyWatched,
+    isMarkAsFavorite,
+    onPressAddToFavoritesMovies,
+  } = useMovieDetail(movieId);
 
   if (!singleMovie) {
     return <LoadingComponent />;
@@ -68,87 +33,34 @@ const MovieDetailScreen = ({route, navigation}) => {
       <ScrollView
         style={{position: 'relative'}}
         showsVerticalScrollIndicator={false}>
-        <Pressable
-          style={{
-            position: 'absolute',
-            top: 50,
-            left: 20,
-            zIndex: 3,
-            backgroundColor: '#34344A',
-            borderRadius: 50,
-          }}
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <FeatherIcon name="arrow-left" size={30} color="white" />
-        </Pressable>
-        <ImageBackground
-          source={{
-            uri: `https://image.tmdb.org/t/p/w500/${singleMovie.backdrop_path}`,
-          }}
-          style={{height: 300, flexDirection: 'row'}}
-          blurRadius={5}>
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Image
-              source={{
-                uri: `https://image.tmdb.org/t/p/w500/${singleMovie.poster_path}`,
-              }}
-              style={{
-                width: 130,
-                height: 195,
-                marginTop: 20,
+        <GoBackButton navigation={navigation} />
 
-                borderRadius: 10,
-              }}></Image>
-          </View>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <Pressable
-              style={{
-                backgroundColor: 'red',
-                padding: 20,
-                borderRadius: 50,
-              }}>
-              <FeatherIcon name="youtube" size={50} color="white" />
-            </Pressable>
-          </View>
-        </ImageBackground>
+        {/* Header */}
+        <MovieDetailsHeader
+          backdrop={singleMovie.backdrop_path}
+          poster={singleMovie.poster_path}
+        />
+
         <View style={{padding: 10, gap: 10}}>
           <Heading style={{color: '#fff', fontSize: 30}}>
             {singleMovie.title}
           </Heading>
 
-          <View style={{flexDirection: 'row', gap: 5}}>
-            {singleMovie.genres.map(element => (
-              <View
-                key={element.id}
-                style={{
-                  backgroundColor: 'white',
-                  paddingHorizontal: 5,
-                  borderRadius: 10,
-                }}>
-                <Text>{element.name}</Text>
-              </View>
-            ))}
+          {/* Genres + Movie Length */}
+          <View style={{flexDirection: 'row', flexWrap: true, gap: 5}}>
+            <MovieGenresList genresList={singleMovie.genres} />
             <Text style={{color: 'white'}}>{singleMovie.runtime} min</Text>
           </View>
-          <View style={{flexDirection: 'row', gap: 10}}>
-            <Text style={{color: 'white'}}>
-              <FeatherIcon name="calendar" size={15} color="white" />
-              {singleMovie.release_date.slice(0, 4)}
-            </Text>
-            <Text style={{color: 'white'}}>
-              <FeatherIcon name="star" size={15} color="white" />
-              {singleMovie.vote_average.toFixed(1)}
-            </Text>
-            <Text style={{color: 'white'}}>450k reviews</Text>
-          </View>
+
+          {/* Movie Info With Icons - Year, Vote1-10, Vote_count */}
+          <MovieInfoWithIcons
+            release_date={singleMovie.release_date}
+            vote_average={singleMovie.vote_average}
+            vote_count={singleMovie.vote_count}
+          />
+
           {/* Przyciski  */}
+          {/* Mark As Watched */}
           <ButtonComponent
             transparent={isMarkAsWatched}
             onPress={() => {
@@ -163,6 +75,7 @@ const MovieDetailScreen = ({route, navigation}) => {
             {!isMarkAsWatched ? 'Mark As Watched' : 'On List'}
           </ButtonComponent>
 
+          {/* Mark As Favorite */}
           <ButtonComponent
             transparent={isMarkAsFavorite}
             onPress={() => {
@@ -177,155 +90,16 @@ const MovieDetailScreen = ({route, navigation}) => {
             {!isMarkAsFavorite ? 'Mark As Favorite' : 'On Favorites List'}
           </ButtonComponent>
 
-          <Heading style={{fontSize: 30, color: 'white', fontWeight: 'bold'}}>
-            Description:
-          </Heading>
-          <Text style={{color: 'white', letterSpacing: 1, fontSize: 20}}>
-            {singleMovie.overview}
-          </Text>
-          {/* DETAILS LIST WITH FIXED WIDTH */}
-          <Heading style={{fontSize: 30, color: 'white', fontWeight: 'bold'}}>
-            Details:
-          </Heading>
-          {/* SINGLE DETAIL */}
-          <View style={{flexDirection: 'row'}}>
-            <Text
-              style={{
-                width: 140,
-                fontSize: 20,
-                fontWeight: 700,
-                color: 'white',
-              }}>
-              Country:
-            </Text>
-            <Text style={{fontSize: 20, color: 'white'}}>
-              {filterUnique(
-                singleMovie.production_companies.map(
-                  element => element.origin_country,
-                ),
-              ).join(', ')}
-            </Text>
-          </View>
-          {/* SINGLE DETAIL */}
-          <View style={{flexDirection: 'row'}}>
-            <Text
-              style={{
-                width: 140,
-                fontSize: 20,
-                fontWeight: 700,
-                color: 'white',
-              }}>
-              Genre:
-            </Text>
-            <Text style={{fontSize: 20, color: 'white', flex: 1}}>
-              {singleMovie.genres.map(element => element.name).join(', ')}
-            </Text>
-          </View>
-          {/* SINGLE DETAIL */}
-          <View style={{flexDirection: 'row'}}>
-            <Text
-              style={{
-                width: 140,
-                fontSize: 20,
-                fontWeight: 700,
-                color: 'white',
-              }}>
-              Date Release:
-            </Text>
-            <Text style={{fontSize: 20, color: 'white'}}>
-              {singleMovie.release_date}
-            </Text>
-          </View>
-          {/* SINGLE DETAIL */}
-          <View style={{flexDirection: 'row'}}>
-            <Text
-              style={{
-                width: 140,
-                fontSize: 20,
-                fontWeight: 700,
-                color: 'white',
-              }}>
-              Production:
-            </Text>
-            <Text
-              style={{fontSize: 20, color: 'white', flex: 1}}
-              numberOfLines={3}>
-              {singleMovie.production_companies
-                .map(element => element.name)
-                .join(', ')}
-            </Text>
-          </View>
+          {/* Movie Description */}
+          <MovieDescription overview={singleMovie.overview} />
+
+          {/* Movie Detail */}
+          <MovieDetails movieData={singleMovie} />
 
           {/* Cast*/}
-          <View>
-            <Heading style={{fontSize: 30, color: 'white', fontWeight: 'bold'}}>
-              Cast:
-            </Heading>
-            <FlatList
-              horizontal
-              data={singleMovie.credits.cast}
-              keyExtractor={item => item.credit_id}
-              renderItem={({item}) => {
-                return (
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      gap: 5,
-                      width: 85,
-                    }}>
-                    {item.profile_path ? (
-                      <Image
-                        source={{
-                          uri: `https://image.tmdb.org/t/p/w500/${item.profile_path}`,
-                        }}
-                        style={{width: 50, height: 50, borderRadius: 50}}
-                      />
-                    ) : (
-                      <FeatherIcon name="user" size={50} color="white" />
-                    )}
-                    <Text style={{fontSize: 10, color: 'white'}}>
-                      {item.name}
-                    </Text>
-                  </View>
-                );
-              }}
-            />
-          </View>
+          <HorizontalCreditsList credits={singleMovie.credits.cast} />
           {/* Crew*/}
-          <View>
-            <Heading style={{fontSize: 30, color: 'white', fontWeight: 'bold'}}>
-              Crew:
-            </Heading>
-            <FlatList
-              horizontal
-              data={singleMovie.credits.crew}
-              keyExtractor={item => item.credit_id}
-              renderItem={({item}) => {
-                return (
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      gap: 5,
-                      width: 85,
-                    }}>
-                    {item.profile_path ? (
-                      <Image
-                        source={{
-                          uri: `https://image.tmdb.org/t/p/w500/${item.profile_path}`,
-                        }}
-                        style={{width: 50, height: 50, borderRadius: 50}}
-                      />
-                    ) : (
-                      <FeatherIcon name="user" size={50} color="white" />
-                    )}
-                    <Text style={{fontSize: 10, color: 'white'}}>
-                      {item.name}
-                    </Text>
-                  </View>
-                );
-              }}
-            />
-          </View>
+          <HorizontalCreditsList credits={singleMovie.credits.crew} />
         </View>
       </ScrollView>
     </View>

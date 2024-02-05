@@ -2,12 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const updateAsyncStorage = async (key, ...value) => {
   try {
-    // Check the number of arguments explicitly using `arguments.length`
-    // However, `arguments` doesn't work in arrow functions directly.
-    // We need to use a different approach to get the function's arity.
+    // Check the number of arguments explicitly using arguments.length
     const numArgs = value.length+1;
-    console.log(key, ...value)
-    console.log(numArgs)
+
     
     if (numArgs === 0) {
       throw new Error('There are no arguments in the function!');
@@ -15,17 +12,17 @@ export const updateAsyncStorage = async (key, ...value) => {
       if(key=="clearStorage"){
         AsyncStorage.removeItem("watched-movies")
       }
-        console.log("get")
+
       const jsonValue = await AsyncStorage.getItem(key);
-      console.log(JSON.parse(jsonValue))
+
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } else if (numArgs === 2) {
       // Retrieve the existing data
-      console.log("update")
+
       const prevDataJson = await AsyncStorage.getItem(key);
       let prevData = prevDataJson ? JSON.parse(prevDataJson) : [];
 
-      // Assuming `prevData` is an array. If it's not, this will need adjustment.
+      // Assuming prevData is an array. If its not, this will need adjustment.
       if (!Array.isArray(prevData)) {
         throw new Error('The data retrieved is not an array.');
       }

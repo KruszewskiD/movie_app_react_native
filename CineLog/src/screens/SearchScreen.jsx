@@ -4,20 +4,31 @@ import {POPULAR} from '../constants/popular';
 import VerticalMovieList from '../components/VerticalMovieList';
 import getSearchResults from '../api/getSearchResults';
 import ButtonComponent from '../components/ButtonComponent';
+import LoadingComponent from '../components/LoadingComponent';
 
 const SearchScreen = ({navigation, route}) => {
   const filteredValue = route.params?.value ? route.params?.value : '';
-  const [searchResults, setSearchResults] = useState();
+
+  const [searchResults, setSearchResults] = useState([]);
+
   useEffect(() => {
     const searchDelay = setTimeout(async () => {
       if (filteredValue) {
-        console.log('query');
         setSearchResults(await getSearchResults(filteredValue));
+      } else if (!filteredValue) {
+        setSearchResults([]);
       }
     }, 1000);
 
-    return () => clearTimeout(searchDelay);
+    return () => {
+      setSearchResults([]);
+      clearTimeout(searchDelay);
+    };
   }, [JSON.stringify(route.params)]);
+
+  if (searchResults.length == 0 && filteredValue != 0) {
+    return <LoadingComponent />;
+  }
 
   return (
     <View

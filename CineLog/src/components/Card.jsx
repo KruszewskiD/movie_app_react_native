@@ -1,4 +1,4 @@
-import {StyleSheet, Text, Image, View, Pressable} from 'react-native';
+import {StyleSheet, Image, View, Pressable} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
@@ -7,7 +7,6 @@ const Card = ({image, data}) => {
   return (
     <Pressable
       onPress={() => {
-        console.log(data);
         return navigation.navigate('MovieScreen', {movie: data});
       }}>
       <View style={{maxWidth: 100, marginHorizontal: 5}}>

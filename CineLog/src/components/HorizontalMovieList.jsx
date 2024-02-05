@@ -11,6 +11,7 @@ const HorizontalMovieList = ({sectionTitle, moviesData}) => {
           color: 'white',
           marginLeft: 15,
           marginVertical: 5,
+          textTransform: 'capitalize',
         }}>
         {sectionTitle}
       </Text>

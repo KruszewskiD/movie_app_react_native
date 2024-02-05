@@ -1,7 +1,6 @@
-import FlexContainer from './FlexContainer';
-import {Image, Text, View, FlatList} from 'react-native';
+import {FlatList} from 'react-native';
 import React from 'react';
-import FeatherIcon from 'react-native-vector-icons/Feather';
+
 import VerticalMovieCard from './VerticalMovieCard';
 const VerticalMovieList = ({movieData}) => {
   return (
