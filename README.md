@@ -1,6 +1,6 @@
 # movie_app_react_native - CineLog
 An iOS and Android application designed to keep a comprehensive record of your movie-watching history.
-
+Still Work in Progress... :)
 <div style="display:flex">
 <h1>ScreenShoots</h1>
 <h3>Welcome Screen</h3>
