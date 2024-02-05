@@ -1,6 +1,6 @@
 # movie_app_react_native - CineLog
 An iOS and Android application designed to keep a comprehensive record of your movie-watching history.
-![Simulator Screenshot - iPhone 15 - 2024-02-05 at 07 30 32](https://github.com/KruszewskiD/movie_app_react_native/assets/155111539/79717918-8297-492c-9091-6a547221a7ac)
+![Simulator Screenshot - iPhone 15 - 2024-02-05 at 07 30 32](https://github.com/KruszewskiD/movie_app_react_native/assets/155111539/79717918-8297-492c-9091-6a547221a7ac || width=500)
 ![Simulator Screenshot - iPhone 15 - 2024-02-05 at 07 30 36](https://github.com/KruszewskiD/movie_app_react_native/assets/155111539/050314fa-f77f-47ef-99d3-5b26be82fd3e)
 ![Simulator Screenshot - iPhone 15 - 2024-02-05 at 07 30 40](https://github.com/KruszewskiD/movie_app_react_native/assets/155111539/82532413-f150-4d51-9c9d-5d8a41533340)
 ![Simulator Screenshot - iPhone 15 - 2024-02-05 at 07 30 58](https://github.com/KruszewskiD/movie_app_react_native/assets/155111539/057e43a3-8162-4c7e-be2e-31627cb25f93)
