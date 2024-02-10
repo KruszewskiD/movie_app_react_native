@@ -21,7 +21,7 @@ const VerticalMovieCard = ({movie}) => {
         <Image
           style={{width: 100, height: 150, borderRadius: 20}}
           source={{
-            uri: `https://image.tmdb.org/t/p/w500/${movie.poster_path}`,
+            uri: `https://image.tmdb.org/t/p/w185/${movie.poster_path}`,
           }}
         />
         <View style={{flex: 1, gap: 10}}>

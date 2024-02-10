@@ -1,4 +1,11 @@
-import {View, ScrollView, Text, Image, ImageBackground} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  Image,
+  ImageBackground,
+  Modal,
+} from 'react-native';
 import Heading from '../components/Heading';
 import ButtonComponent from '../components/ButtonComponent';
 
@@ -16,6 +23,7 @@ import MovieDetailsHeader from './MovieDetailsHeader';
 
 const MovieDetailScreen = ({route, navigation}) => {
   const movieId = route.params.movie.id;
+
   const {
     singleMovie,
     isMarkAsWatched,
@@ -29,7 +37,7 @@ const MovieDetailScreen = ({route, navigation}) => {
   }
 
   return (
-    <View style={{flex: 1, backgroundColor: '#34344A'}}>
+    <View style={{flex: 1, backgroundColor: '#34344A', position: 'relative'}}>
       <ScrollView
         style={{position: 'relative'}}
         showsVerticalScrollIndicator={false}>
@@ -70,6 +78,8 @@ const MovieDetailScreen = ({route, navigation}) => {
                 poster_path: singleMovie.poster_path,
                 release_date: singleMovie.release_date,
                 vote_average: singleMovie.vote_average,
+                runtime: singleMovie.runtime,
+                genres: singleMovie.genres,
               });
             }}>
             {!isMarkAsWatched ? 'Mark As Watched' : 'On List'}
@@ -85,6 +95,8 @@ const MovieDetailScreen = ({route, navigation}) => {
                 poster_path: singleMovie.poster_path,
                 release_date: singleMovie.release_date,
                 vote_average: singleMovie.vote_average,
+                runtime: singleMovie.runtime,
+                genres: singleMovie.genres,
               });
             }}>
             {!isMarkAsFavorite ? 'Mark As Favorite' : 'On Favorites List'}

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -13,8 +14,28 @@ import Heading from '../components/Heading';
 import ExternalServices from '../components/ExternalServices';
 import AuthToggle from '../components/AuthToggle';
 import SplitTextLine from '../components/SplitTextLine';
-
+import auth from '@react-native-firebase/auth';
+import {useState} from 'react';
 const SignUpScreen = ({navigation}) => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
+
+  const signUpFn = () => {
+    if (password !== confirmPassword) {
+      Alert.alert('Password Are not the same!');
+      return;
+    }
+    auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(e => {
+        Alert.alert(e.nativeErrorMessage);
+      });
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.signupScreenWrapper}
@@ -30,13 +51,24 @@ const SignUpScreen = ({navigation}) => {
         <View style={styles.contentContainer}>
           {/* Input */}
           <View style={styles.inputsContainer}>
-            <UserTextInput placeholder="E-mail Address" />
-            <UserTextInput placeholder="Password" secure />
-            <UserTextInput placeholder="Confirm Password" secure />
+            <UserTextInput
+              placeholder="E-mail Address"
+              setFunction={setEmail}
+            />
+            <UserTextInput
+              placeholder="Password"
+              secure
+              setFunction={setPassword}
+            />
+            <UserTextInput
+              placeholder="Confirm Password"
+              secure
+              setFunction={setConfirmPassword}
+            />
           </View>
           {/* Button */}
           <View style={styles.buttonContainer}>
-            <ButtonComponent>Sign-up</ButtonComponent>
+            <ButtonComponent onPress={signUpFn}>Sign-up</ButtonComponent>
           </View>
           {/* Or login with */}
           <SplitTextLine />

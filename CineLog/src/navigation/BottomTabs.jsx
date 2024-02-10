@@ -4,6 +4,7 @@ import RecentlyWatchedScreen from '../screens/RecentlyWatchedScreen';
 import FavoritesMovieScreen from '../screens/FavoritesMoviesScreen';
 import MainScreenHeaderTitle from '../components/MainScreenHeaderTitle';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import OptionsScreen from '../screens/OptionsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -61,6 +62,24 @@ const BottomTabs = () => {
           tabBarIcon: ({focused}) => (
             <FeatherIcon
               name="heart"
+              size={20}
+              color={focused ? 'white' : '#999'}
+            />
+          ),
+          headerStyle: {
+            backgroundColor: '#34344A',
+          },
+          headerTintColor: '#ddd',
+        }}></Tab.Screen>
+      <Tab.Screen
+        name="Opcje"
+        component={OptionsScreen}
+        options={{
+          headerShown: true,
+          tabBarLabel: 'Options',
+          tabBarIcon: ({focused}) => (
+            <FeatherIcon
+              name="settings"
               size={20}
               color={focused ? 'white' : '#999'}
             />

@@ -18,7 +18,7 @@ export function useRecentlyWatched() {
 
   const clearRecentlyWatched = useCallback(async () => {
     try {
-      await updateAsyncStorage('clearStorage', null, 'watched-movies'); // Assuming `updateAsyncStorage` supports a clear operation
+      await updateAsyncStorage('clearStorage'); // Assuming `updateAsyncStorage` supports a clear operation
       setRecentlyWatched(null); // Clear the state
     } catch (error) {
       console.error('Failed to clear recently watched:', error);

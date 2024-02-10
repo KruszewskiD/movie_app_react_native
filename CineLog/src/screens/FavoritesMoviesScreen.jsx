@@ -27,7 +27,7 @@ const FavoritesMovieScreen = () => {
         paddingHorizontal: 16,
         position: 'relative',
       }}>
-      <Pressable
+      {/* <Pressable
         style={{
           position: 'absolute',
           right: 0,
@@ -39,7 +39,7 @@ const FavoritesMovieScreen = () => {
         }}
         onPress={clearFavorites}>
         <Text>X</Text>
-      </Pressable>
+      </Pressable> */}
       <VerticalMovieList movieData={favoritesList} />
     </View>
   );

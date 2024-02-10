@@ -5,7 +5,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 
 import AuthStack from './src/navigation/AuthStack';
@@ -16,22 +16,46 @@ import SearchScreen from './src/screens/SearchScreen';
 
 import MovieDetailScreen from './src/screens/MovieDetailsScreen';
 import NavHeaderSearchComponent from './src/components/NavHeaderSearchComponent';
+
+import auth from '@react-native-firebase/auth';
+import LoadingComponent from './src/components/LoadingComponent';
 const Stack = createStackNavigator();
 
 function App() {
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) {
+    return <LoadingComponent />;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
-          name="Auth"
-          component={AuthStack}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="Tab"
-          component={BottomTabs}
-          options={{headerShown: false}}
-        />
+        {!user ? (
+          <Stack.Screen
+            name="Auth"
+            component={AuthStack}
+            options={{headerShown: false}}
+          />
+        ) : (
+          <Stack.Screen
+            name="Tab"
+            component={BottomTabs}
+            options={{headerShown: false}}
+          />
+        )}
         <Stack.Screen
           name="Search"
           component={SearchScreen}

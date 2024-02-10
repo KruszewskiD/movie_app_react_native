@@ -26,7 +26,7 @@ const HorizontalMovieList = ({sectionTitle, moviesData}) => {
               <Card
                 title={item.original_title}
                 data={item}
-                image={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
+                image={`https://image.tmdb.org/t/p/w185/${item.poster_path}`}
               />
             </Pressable>
           )}

@@ -11,7 +11,11 @@ const Card = ({image, data}) => {
       }}>
       <View style={{maxWidth: 100, marginHorizontal: 5}}>
         <Image
-          style={{width: 100, height: 150}}
+          style={{
+            width: 100,
+            height: 150,
+            backgroundColor: 'rgba(100,100,100,0.2)',
+          }}
           source={{
             uri: image,
           }}

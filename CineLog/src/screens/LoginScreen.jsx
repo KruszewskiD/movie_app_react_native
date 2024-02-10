@@ -1,12 +1,25 @@
-import {StyleSheet, Text, View, Image, Pressable, Keyboard} from 'react-native';
+import {StyleSheet, Text, View, Pressable, Keyboard, Alert} from 'react-native';
 import UserTextInput from '../components/UserTextInput';
 import ButtonComponent from '../components/ButtonComponent';
 import Heading from '../components/Heading';
 import ExternalServices from '../components/ExternalServices';
 import AuthToggle from '../components/AuthToggle';
 import SplitTextLine from '../components/SplitTextLine';
-
+import auth from '@react-native-firebase/auth';
+import {useState} from 'react';
 const LoginScreen = ({navigation}) => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
+  const loginEmailAndPassword = async () => {
+    try {
+      const res = await auth().signInWithEmailAndPassword(email, password);
+      console.log(res);
+    } catch (e) {
+      Alert.alert(e.nativeErrorMessage);
+    }
+  };
+
   return (
     <View style={styles.loginScreenWrapper}>
       <Pressable style={{flex: 1}} onPress={() => Keyboard.dismiss()}>
@@ -19,14 +32,21 @@ const LoginScreen = ({navigation}) => {
         <View style={styles.contentWrapper}>
           {/* Input */}
           <View style={styles.inputsWrapper}>
-            <UserTextInput placeholder="E-mail Address" />
-            <UserTextInput placeholder="Password" secure />
+            <UserTextInput
+              placeholder="E-mail Address"
+              setFunction={setEmail}
+            />
+            <UserTextInput
+              placeholder="Password"
+              secure
+              setFunction={setPassword}
+            />
           </View>
           {/* Button */}
           <View style={styles.buttonContainer}>
             <ButtonComponent
               onPress={() => {
-                navigation.navigate('Tab');
+                loginEmailAndPassword();
               }}>
               Login
             </ButtonComponent>
