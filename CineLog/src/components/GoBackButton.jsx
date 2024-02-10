@@ -10,6 +10,8 @@ const GoBackButton = ({navigation}) => {
         zIndex: 3,
         backgroundColor: '#34344A',
         borderRadius: 50,
+        borderWidth: 1,
+        borderColor: '#fff',
       }}
       onPress={() => {
         navigation.goBack();

@@ -23,7 +23,7 @@ const HorizontalCreditsList = ({credits}) => {
               {item.profile_path ? (
                 <Image
                   source={{
-                    uri: `https://image.tmdb.org/t/p/w500/${item.profile_path}`,
+                    uri: `https://image.tmdb.org/t/p/w185/${item.profile_path}`,
                   }}
                   style={{width: 50, height: 50, borderRadius: 50}}
                 />
